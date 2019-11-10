@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Student } from './student.model';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StudentService {
   students: Student[] = [
@@ -12,33 +14,43 @@ export class StudentService {
       name: 'Krunal',
       enrollmentNumber: 110470116021,
       college: 'VVP Engineering College',
-      university: 'GTU'
+      university: 'GTU',
     },
     {
       id: 2,
       name: 'Rushabh',
       enrollmentNumber: 110470116023,
       college: 'VVP Engineering College',
-      university: 'GTU'
+      university: 'GTU',
     },
     {
       id: 3,
       name: 'Ankit',
       enrollmentNumber: 110470116022,
       college: 'VVP Engineering College',
-      university: 'GTU'
-    }
+      university: 'GTU',
+    },
   ];
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  public getStudents(): Observable<Student[]> {
-    const studentsObservable = new Observable<Student[]>(observer => {
-           setTimeout(() => {
-               observer.next(this.students);
-           }, 1000);
+  public getStudentsOnce(): Observable<Student[]> {
+    return new Observable<Student[]>((observer) => {
+      console.log('refreshing');
+      observer.next(this.students);
     });
+  }
 
-    return studentsObservable;
-}
+  public getStudentsChangedOverTime(): Observable<Student[]> {
+    return new Observable<Student[]>((observer) => {
+      console.log('refreshing');
+      setInterval(() => {
+        observer.next(this.students);
+      }, 1000);
+    });
+  }
+
+  public getErrorOnce(): Observable<Student[]> {
+    return this.http.get<Student[]>('/api/students');
+  }
 }
