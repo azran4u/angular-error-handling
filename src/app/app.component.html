@@ -15,7 +15,12 @@
       </div>
     </div>
   </div>
+</div>
+<ng-template #loadingOrError>
+  <div *ngIf="errorLoading$ | async; else loading">
+    Error loading the list of users. Please try again later.
+  </div>
   <ng-template #loading>
     Loading users...
   </ng-template>
-</div>
+</ng-template>
