@@ -1,15 +1,16 @@
-<div>error = {{ error$ | async }}</div>
-<div *ngIf="students$ | async as students; else loading">
-  <div class="container">
-    <div class="row" style="margin-top: 30px">
-      <div class="col-md-3 col-xs-6" *ngFor="let student of students">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">{{ student.name }}</h5>
-            <h6 class="card-subtitle">{{ student.enrollmentNumber }}</h6>
-            <p class="card-text">{{ student.college }}</p>
-            <p class="card-text">{{ student.university }}</p>
-            <a class="btn btn-primary" href="#">Go somewhere</a>
+<div *ngFor="let studentsList$ of students$">
+  <div *ngIf="studentsList$.data | async as students; else loading">
+    <div class="container">
+      <div class="row" style="margin-top: 30px">
+        <div class="col-md-3 col-xs-6" *ngFor="let student of students">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ student.name }}</h5>
+              <h6 class="card-subtitle">{{ student.enrollmentNumber }}</h6>
+              <p class="card-text">{{ student.college }}</p>
+              <p class="card-text">{{ student.university }}</p>
+              <a class="btn btn-primary" href="#">Go somewhere</a>
+            </div>
           </div>
         </div>
       </div>
@@ -24,3 +25,5 @@
     Loading users...
   </ng-template>
 </ng-template>
+<div>error = {{ error$ | async }}</div>
+<div>number = {{ numbers$ | async }}</div>

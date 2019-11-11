@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Student } from './student.model';
-import { Observable } from 'rxjs';
+import { Observable, from, timer, concat, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-
+import { concatMap, delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +33,16 @@ export class StudentService {
   ];
 
   constructor(private http: HttpClient) {}
+
+  public getNumbers(): Observable<number> {
+    return of(1000, 2000).pipe(concatMap((val) => of(val).pipe(delay(1000))));
+  }
+
+  public getStudents(): Observable<Student[]> {
+    return from(this.students).pipe(
+      concatMap((val) => of([val]).pipe(delay(1000))),
+    );
+  }
 
   public getStudentsOnce(): Observable<Student[]> {
     return new Observable<Student[]>((observer) => {
